@@ -1,6 +1,6 @@
 import {put, takeEvery} from 'redux-saga/effects';
 import createState from './state';
-import {passData} from '../actions';
+import {passData} from './common';
 import gameStatus from 'Logic/const/gameStatus';
 // import faceDirections from 'Logic/const/faceDirections';
 import {declareObject, TNumber} from 'Lib/Core/prop_types';
@@ -39,6 +39,12 @@ export default createState(
       });
     });
 
+    addSaga(function* () {
+      yield takeEvery('GAME_PROGRESS_MOVE', function* (action) {
+        yield put(passData('GAME_PROGRESS_MOVE_R', {x: action.data.x, y: action.data.y}));
+      });
+    });
+
     reduce('GAME_PROGRESS_START_R', function (state, action) {
       let data = Object.assign({}, state);
       data.status = gameStatus.CHOOSE_LOCATION;
@@ -60,6 +66,13 @@ export default createState(
       return data;
     });
 
+    reduce('GAME_PROGRESS_MOVE_R', function (state, action) {
+      let data = Object.assign({}, state);
+      data.x = action.x;
+      data.y = action.y;
+      return data;
+    });
+
     reduceReset('GAME_PROGRESS_RESET');
   }
 );
@@ -68,5 +81,6 @@ export const gameProgress = {
   start: () => ({type: 'GAME_PROGRESS_START'}),
   selectLocation: (data) => ({type: 'GAME_PROGRESS_LOCATION', data}),
   selectFace: (data) => ({type: 'GAME_PROGRESS_FACE', data}),
+  move: () => ({type: 'GAME_PROGRESS_MOVE'}),
   reset: () => ({type: 'GAME_PROGRESS_RESET'}),
 };

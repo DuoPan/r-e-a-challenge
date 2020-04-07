@@ -67,13 +67,17 @@ function ControlPanel({
     return (<Typography variant={'body2'} className={classes.hint}>{wording}</Typography>);
   }
 
+  function handleMove() {
+    // console.log('nnn')
+  }
+
   return (
     <div className={classes.root}>
       <Typography variant={'h5'} className={classes.title}>Welcome</Typography>
       <Typography variant={'body1'} className={classes.title}>Please <span className={classes.highLight}>enjoy</span> this game.</Typography>
       <div className={classes.row}>
         <Button label={'Place'} Icon={<PanToolIcon/>} onClick={start} disabled={gameProgress.status !== gameStatus.INIT}/>
-        <Button label={'Move'} Icon={<DirectionsWalkIcon/>} disabled={gameProgress.status !== gameStatus.RUNNING}/>
+        <Button label={'Move'} Icon={<DirectionsWalkIcon/>} onClick={handleMove} disabled={gameProgress.status !== gameStatus.RUNNING}/>
         <Button label={'Left'} Icon={<RotateLeftIcon/>} disabled={gameProgress.status !== gameStatus.RUNNING}/>
         <Button label={'Right'} Icon={<RotateRightIcon/>} disabled={gameProgress.status !== gameStatus.RUNNING}/>
         <Button label={'Report'} Icon={<EventNoteIcon/>} color={'secondary'} disabled={gameProgress.status !== gameStatus.RUNNING}/>

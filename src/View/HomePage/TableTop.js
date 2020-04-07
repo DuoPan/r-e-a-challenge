@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -9,6 +9,8 @@ import {gameProgress, TGameProgress} from 'Logic/redux/state/game_progress';
 import faceDirections from 'Logic/const/faceDirections';
 import faceDirectionsOptions from 'Logic/dict/faceDirections';
 import theme from 'theme';
+import {tableTopSize} from 'Logic/redux/state/table_top_size';
+import dataStatus from 'Logic/redux/data_status';
 
 const useStyles = makeStyles((_status) => ({
   root: {
@@ -44,9 +46,29 @@ function TableTop({
   gameProgress,
   selectLocation,
   selectFace,
+  tableTopSize,
+  setSize,
 }) {
   let _status = gameProgress.status;
   const classes = useStyles({_status});
+
+  useEffect(
+    () => {
+      if (tableTopSize.status === dataStatus.INIT) {
+        if (!(Number.isInteger(row) && row >= 1 && Number.isInteger(column) && column >= 1)) {
+          setSize({rows: 5, columns: 5});
+        } else {
+          setSize({rows: row, columns: column});
+        }
+      }
+    },
+    [
+      tableTopSize.status,
+      setSize,
+      row,
+      column,
+    ]
+  );
 
   // set default value if the user input is wrong
   if (!(Number.isInteger(row) && row >= 1 && Number.isInteger(column) && column >= 1)) {
@@ -135,12 +157,14 @@ TableTop.propTypes = {
 function mapStateToProps(state) {
   return {
     gameProgress: state.gameProgress,
+    tableTopSize: state.tableTopSize,
   }
 }
 
 const mapDispatchToProps = {
   selectLocation: gameProgress.selectLocation,
   selectFace: gameProgress.selectFace,
+  setSize: tableTopSize.set,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableTop);

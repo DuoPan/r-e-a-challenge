@@ -1,7 +1,3 @@
-import {connectionError} from './state/connection_error';
-import {loadingTransition} from './state/loading_transition';
-import {gameProgress} from './state/game_progress';
-
 const passData = (type, data) => ({...{type}, ...data});
 const getApiResponse = (type, data) => {
   return ({type, data});
@@ -17,8 +13,5 @@ export {
   getApiResponse,
   handleError,
   showLoading,
-  hideLoading,
-  connectionError,
-  loadingTransition,
-  gameProgress,
+  hideLoading
 }

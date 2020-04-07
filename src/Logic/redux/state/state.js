@@ -1,5 +1,5 @@
 import {put, takeLeading} from 'redux-saga/effects';
-import {connectionError} from '../actions';
+import {connectionError} from './connection_error';
 import {dataStatus, transformActionError} from '../transform';
 
 // Create a state.
