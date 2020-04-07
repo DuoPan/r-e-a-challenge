@@ -38,6 +38,7 @@ function Square({
       variant="outlined"
       style={_style}
       className={classes.root}
+      onClick={onClick}
       {...others}
     >
       <Typography variant={'subtitle1'}>

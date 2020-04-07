@@ -30,6 +30,7 @@ function Button({
       color='primary'
       className={classes.root}
       style={style}
+      onClick={onClick}
       {...others}
     >
       {label}

@@ -1,14 +1,22 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import {TNumber, TObject} from 'Lib/Core/prop_types';
 import Square from 'View/Basic/Square';
+import gameStatus from 'Logic/const/gameStatus';
+import {gameProgress, TGameProgress} from 'Logic/redux/state/game_progress';
+import faceDirections from 'Logic/const/faceDirections';
+import faceDirectionsOptions from 'Logic/dict/faceDirections';
+import theme from 'theme';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_status) => ({
   root: {
-    alignSelf: 'center',
-    textAlign: 'center',
     margin: 30,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    cursor: ({_status}) => _status === gameStatus.CHOOSE_LOCATION ? 'crosshair' : null,
   },
   row: {
     display: 'flex',
@@ -19,18 +27,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  north: {
-    marginBottom: 20,
+  directions: {
+    width: 'fit-content',
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: ({_status}) => _status === gameStatus.CHOOSE_FACE ? theme.palette.primary[500]: null,
+    cursor: ({_status}) => _status === gameStatus.CHOOSE_FACE ? 'pointer' : null,
   },
-  south: {
-    marginTop: 20,
-  },
-  west: {
-    marginRight: 20,
-  },
-  east: {
-    marginLeft: 20,
-  }
 }));
 
 function TableTop({
@@ -38,8 +41,12 @@ function TableTop({
   column = 5,
   cellSize = 100,
   style = {},
+  gameProgress,
+  selectLocation,
+  selectFace,
 }) {
-  const classes = useStyles();
+  let _status = gameProgress.status;
+  const classes = useStyles({_status});
 
   // set default value if the user input is wrong
   if (!(Number.isInteger(row) && row >= 1 && Number.isInteger(column) && column >= 1)) {
@@ -47,11 +54,18 @@ function TableTop({
     column = 5;
   }
 
+  function handleClickSquare(x, y) {
+    if (gameProgress.status === gameStatus.CHOOSE_LOCATION) {
+      // console.log('Choose ' + x + ',' + y);
+      selectLocation({x, y});
+    }
+  }
+
   // render a single row
   function renderRow(x) {
     let cols = [];
     for (let i = 0; i < column; ++ i) {
-      cols.push(<Square label={`${x},${i}`} width={cellSize} height={cellSize}/>);
+      cols.push(<Square label={`${x},${i}`} width={cellSize} height={cellSize} onClick={() => handleClickSquare(x, i)} isOn={gameProgress.x === x && gameProgress.y === i}/>);
     }
     return (
       <div className={classes.row}>
@@ -73,7 +87,7 @@ function TableTop({
       rows.push(renderRow(i));
     }
     return (
-      <div className={classes.col}>
+      <div className={classes.col} style={{margin: 20}}>
         {rows.map((item, index) => {
           return (
             <div key={`row_${index}`}>
@@ -85,15 +99,27 @@ function TableTop({
     );
   }
 
+  function handleClickDirection(label, direction) {
+    if (gameProgress.status === gameStatus.CHOOSE_FACE) {
+      // console.log('Choose ' + label + ',' + direction);
+      selectFace({face: direction});
+    }
+  }
+
+  function renderDirectionText(direction) {
+    const _label = faceDirectionsOptions[direction].label;
+    return (<Typography variant={'h6'} className={classes.directions} onClick={() => handleClickDirection(_label, direction)}>{_label}</Typography>);
+  }
+
   return (
     <div className={classes.root} style={style}>
-      <Typography variant={'h6'} className={classes.north}>North</Typography>
+      {renderDirectionText(faceDirections.NORTH)}
       <div className={classes.row}>
-        <Typography variant={'h6'} className={classes.west}>West</Typography>
+        {renderDirectionText(faceDirections.WEST)}
         {renderAllRows()}
-        <Typography variant={'h6'} className={classes.east}>East</Typography>
+        {renderDirectionText(faceDirections.EAST)}
       </div>
-      <Typography variant={'h6'} className={classes.south}>South</Typography>
+      {renderDirectionText(faceDirections.SOUTH)}
     </div>
   );
 }
@@ -103,6 +129,18 @@ TableTop.propTypes = {
   column: TNumber,
   cellSize: TNumber,
   style: TObject,
+  gameProgress: TGameProgress.isRequired,
 };
 
-export default TableTop;
+function mapStateToProps(state) {
+  return {
+    gameProgress: state.gameProgress,
+  }
+}
+
+const mapDispatchToProps = {
+  selectLocation: gameProgress.selectLocation,
+  selectFace: gameProgress.selectFace,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableTop);

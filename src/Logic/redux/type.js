@@ -1,9 +1,9 @@
 import {TConnectionError} from './state/connection_error';
 import {TLoadingTransition} from './state/loading_transition';
-import {TProducts} from './state/products_load';
+import {TGameProgress} from './state/game_progress';
 
 export {
   TConnectionError,
   TLoadingTransition,
-  TProducts,
+  TGameProgress,
 };

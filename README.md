@@ -21,6 +21,6 @@ src:
  ### Details
  * React app
  * URL: http://localhost:3000/  (default if the port is not used by the other program)
- 
+ * Only support desktop website
  
  ### Others
