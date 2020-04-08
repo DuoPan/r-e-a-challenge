@@ -1,7 +1,8 @@
 import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import ControlPanel from './ControlPanel';
-import TableTop from 'View/HomePage/TableTop';
+import TableTop from './TableTop';
+import Report from './Report';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +20,7 @@ function HomePage() {
     <div className={classes.root}>
       <ControlPanel/>
       <TableTop cellSize={150}/>
+      <Report/>
     </div>
   );
 }

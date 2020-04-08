@@ -11,6 +11,7 @@ import faceDirectionsOptions from 'Logic/dict/faceDirections';
 import theme from 'theme';
 import {tableTopSize} from 'Logic/redux/state/table_top_size';
 import dataStatus from 'Logic/redux/data_status';
+import {gameReport} from 'Logic/redux/state/game_report';
 
 const useStyles = makeStyles((_status) => ({
   root: {
@@ -48,6 +49,7 @@ function TableTop({
   selectFace,
   tableTopSize,
   setSize,
+  record,
 }) {
   let _status = gameProgress.status;
   const classes = useStyles({_status});
@@ -125,6 +127,7 @@ function TableTop({
     if (gameProgress.status === gameStatus.CHOOSE_FACE) {
       // console.log('Choose ' + label + ',' + direction);
       selectFace({face: direction});
+      record({text: 'PLACE ' + gameProgress.x + ',' + gameProgress.y + ',' + faceDirectionsOptions[direction].label.toUpperCase()});
     }
   }
 
@@ -165,6 +168,7 @@ const mapDispatchToProps = {
   selectLocation: gameProgress.selectLocation,
   selectFace: gameProgress.selectFace,
   setSize: tableTopSize.set,
+  record: gameReport.record,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableTop);

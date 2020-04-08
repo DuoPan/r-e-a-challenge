@@ -39,7 +39,12 @@ function createStateProps(name, initState) {
     addSaga(
       function* () {
         yield takeLeading(type, function* (action) {
-          yield put({type: typeDone, init: action.init});
+          for (let key in initState) {
+            if (Array.isArray(initState[key])) {
+              initState[key] = [];
+            }
+          }
+          yield put({type: typeDone});
         });
       }
     );

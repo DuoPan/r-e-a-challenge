@@ -23,5 +23,6 @@ src:
  * URL: http://localhost:3000/  (default if the port is not used by the other program)
  * Only support desktop website
  * Developer can set different table top size, such as 4*4, 1*3, 2*5... and these also work.
+ * Real time display the game process and result.
  
  ### Others
