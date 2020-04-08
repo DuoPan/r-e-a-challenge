@@ -11,6 +11,7 @@ import EventNoteIcon from '@material-ui/icons/EventNote';
 import {gameProgress, TGameProgress} from 'Logic/redux/state/game_progress';
 import gameStatus from 'Logic/const/gameStatus';
 import Compass from 'View/HomePage/Compass';
+import faceDirections from 'Logic/const/faceDirections';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +45,8 @@ const useStyles = makeStyles((theme) => ({
 function ControlPanel({
   gameProgress,
   start,
+  tableTopSize,
+  move,
 }) {
   const classes = useStyles();
 
@@ -68,7 +71,15 @@ function ControlPanel({
   }
 
   function handleMove() {
-    // console.log('nnn')
+    if (gameProgress.face === faceDirections.NORTH && tableTopSize.safeToNorth.find(location => (location.x === gameProgress.x && location.y === gameProgress.y))) {
+      move({x: gameProgress.x + 1, y: gameProgress.y});
+    } else if (gameProgress.face === faceDirections.SOUTH && tableTopSize.safeToSouth.find(location => (location.x === gameProgress.x && location.y === gameProgress.y))) {
+      move({x: gameProgress.x - 1, y: gameProgress.y});
+    } else if (gameProgress.face === faceDirections.WEST && tableTopSize.safeToWest.find(location => (location.x === gameProgress.x && location.y === gameProgress.y))) {
+      move({x: gameProgress.x, y: gameProgress.y - 1});
+    } else if (gameProgress.face === faceDirections.EAST && tableTopSize.safeToEast.find(location => (location.x === gameProgress.x && location.y === gameProgress.y))) {
+      move({x: gameProgress.x, y: gameProgress.y + 1});
+    }
   }
 
   return (
@@ -97,11 +108,13 @@ ControlPanel.propTypes = {
 function mapStateToProps(state) {
   return {
     gameProgress: state.gameProgress,
+    tableTopSize: state.tableTopSize,
   }
 }
 
 const mapDispatchToProps = {
   start: gameProgress.start,
+  move: gameProgress.move,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel);

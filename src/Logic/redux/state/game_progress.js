@@ -81,6 +81,6 @@ export const gameProgress = {
   start: () => ({type: 'GAME_PROGRESS_START'}),
   selectLocation: (data) => ({type: 'GAME_PROGRESS_LOCATION', data}),
   selectFace: (data) => ({type: 'GAME_PROGRESS_FACE', data}),
-  move: () => ({type: 'GAME_PROGRESS_MOVE'}),
+  move: (data) => ({type: 'GAME_PROGRESS_MOVE', data}),
   reset: () => ({type: 'GAME_PROGRESS_RESET'}),
 };
