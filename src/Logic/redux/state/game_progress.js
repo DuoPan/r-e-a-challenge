@@ -2,7 +2,6 @@ import {put, takeEvery} from 'redux-saga/effects';
 import createState from './state';
 import {passData} from './common';
 import gameStatus from 'Logic/const/gameStatus';
-// import faceDirections from 'Logic/const/faceDirections';
 import {declareObject, TNumber} from 'Lib/Core/prop_types';
 
 export const TGameProgress = declareObject({

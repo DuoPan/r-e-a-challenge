@@ -86,16 +86,16 @@ function TableTop({
   }
 
   // render a single row
-  function renderRow(x) {
+  function renderRow(y) {
     let cols = [];
     for (let i = 0; i < column; ++ i) {
-      cols.push(<Square label={`${x},${i}`} width={cellSize} height={cellSize} onClick={() => handleClickSquare(x, i)} isOn={gameProgress.x === x && gameProgress.y === i}/>);
+      cols.push(<Square label={`${i},${y}`} width={cellSize} height={cellSize} onClick={() => handleClickSquare(i, y)} isOn={gameProgress.y === y && gameProgress.x === i}/>);
     }
     return (
       <div className={classes.row}>
         {cols.map((item, index) => {
           return (
-            <div key={`col_${x}_${index}`}>
+            <div key={`col_${y}_${index}`}>
               {item}
             </div>
           );

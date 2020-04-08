@@ -7,6 +7,8 @@ import {TGameReport} from 'Logic/redux/state/game_report';
 
 const useStyles = makeStyles((_status) => ({
   root: {
+    alignSelf: 'center',
+    marginBottom: 30,
   },
 }));
 

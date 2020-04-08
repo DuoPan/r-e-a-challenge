@@ -104,16 +104,16 @@ function ControlPanel({
 
   function handleMove() {
     if (gameProgress.face === faceDirections.NORTH && tableTopSize.safeToNorth.find(location => (location.x === gameProgress.x && location.y === gameProgress.y))) {
-      move({x: gameProgress.x + 1, y: gameProgress.y});
+      move({x: gameProgress.x, y: gameProgress.y + 1});
       record({text: 'MOVE'});
     } else if (gameProgress.face === faceDirections.SOUTH && tableTopSize.safeToSouth.find(location => (location.x === gameProgress.x && location.y === gameProgress.y))) {
-      move({x: gameProgress.x - 1, y: gameProgress.y});
-      record({text: 'MOVE'});
-    } else if (gameProgress.face === faceDirections.WEST && tableTopSize.safeToWest.find(location => (location.x === gameProgress.x && location.y === gameProgress.y))) {
       move({x: gameProgress.x, y: gameProgress.y - 1});
       record({text: 'MOVE'});
+    } else if (gameProgress.face === faceDirections.WEST && tableTopSize.safeToWest.find(location => (location.x === gameProgress.x && location.y === gameProgress.y))) {
+      move({x: gameProgress.x - 1, y: gameProgress.y});
+      record({text: 'MOVE'});
     } else if (gameProgress.face === faceDirections.EAST && tableTopSize.safeToEast.find(location => (location.x === gameProgress.x && location.y === gameProgress.y))) {
-      move({x: gameProgress.x, y: gameProgress.y + 1});
+      move({x: gameProgress.x + 1, y: gameProgress.y});
       record({text: 'MOVE'});
     }
   }

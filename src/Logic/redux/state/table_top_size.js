@@ -36,19 +36,19 @@ export default createState(
         for (let j = 0; j < action.columns; ++ j) {
           // top row cannot move to north
           if (i !== action.rows - 1) {
-            data.safeToNorth.push({x: i, y: j});
+            data.safeToNorth.push({x: j, y: i});
           }
           // bottom row cannot move to south
           if (i !== 0) {
-            data.safeToSouth.push({x: i, y: j});
+            data.safeToSouth.push({x: j, y: i});
           }
           // left column cannot move to west
           if (j !== 0) {
-            data.safeToWest.push({x: i, y: j});
+            data.safeToWest.push({x: j, y: i});
           }
           // right column cannot move to east
           if (j !== action.columns - 1) {
-            data.safeToEast.push({x: i, y: j});
+            data.safeToEast.push({x: j, y: i});
           }
         }
       }
