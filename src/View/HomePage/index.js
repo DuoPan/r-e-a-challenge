@@ -1,9 +1,7 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import {makeStyles} from '@material-ui/core/styles';
 import ControlPanel from './ControlPanel';
 import TableTop from 'View/HomePage/TableTop';
-import {gameProgress, TGameProgress} from 'Logic/redux/state/game_progress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,12 +12,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function HomePage({
-  gameProgress,
-  start,
-}) {
+function HomePage() {
   const classes = useStyles();
-  // console.log(gameProgress);
+
   return (
     <div className={classes.root}>
       <ControlPanel/>
@@ -29,17 +24,6 @@ function HomePage({
 }
 
 HomePage.propTypes = {
-  gameProgress: TGameProgress.isRequired,
 };
 
-function mapStateToProps(state) {
-  return {
-    gameProgress: state.gameProgress,
-  }
-}
-
-const mapDispatchToProps = {
-  start: gameProgress.start,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default HomePage;

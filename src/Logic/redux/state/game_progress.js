@@ -45,6 +45,18 @@ export default createState(
       });
     });
 
+    addSaga(function* () {
+      yield takeEvery('GAME_PROGRESS_LEFT', function* (action) {
+        yield put(passData('GAME_PROGRESS_LEFT_R', {}));
+      });
+    });
+
+    addSaga(function* () {
+      yield takeEvery('GAME_PROGRESS_RIGHT', function* (action) {
+        yield put(passData('GAME_PROGRESS_RIGHT_R', {}));
+      });
+    });
+
     reduce('GAME_PROGRESS_START_R', function (state, action) {
       let data = Object.assign({}, state);
       data.status = gameStatus.CHOOSE_LOCATION;
@@ -73,6 +85,24 @@ export default createState(
       return data;
     });
 
+    reduce('GAME_PROGRESS_LEFT_R', function (state, action) {
+      let data = Object.assign({}, state);
+      data.face = (data.face + 3) % 4;
+      if (data.face === 0) {
+        data.face = 4;
+      }
+      return data;
+    });
+
+    reduce('GAME_PROGRESS_RIGHT_R', function (state, action) {
+      let data = Object.assign({}, state);
+      data.face = (data.face + 1) % 4;
+      if (data.face === 0) {
+        data.face = 4;
+      }
+      return data;
+    });
+
     reduceReset('GAME_PROGRESS_RESET');
   }
 );
@@ -82,5 +112,7 @@ export const gameProgress = {
   selectLocation: (data) => ({type: 'GAME_PROGRESS_LOCATION', data}),
   selectFace: (data) => ({type: 'GAME_PROGRESS_FACE', data}),
   move: (data) => ({type: 'GAME_PROGRESS_MOVE', data}),
+  left: () => ({type: 'GAME_PROGRESS_LEFT'}),
+  right: () => ({type: 'GAME_PROGRESS_RIGHT'}),
   reset: () => ({type: 'GAME_PROGRESS_RESET'}),
 };

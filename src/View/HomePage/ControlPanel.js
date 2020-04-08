@@ -12,6 +12,7 @@ import {gameProgress, TGameProgress} from 'Logic/redux/state/game_progress';
 import gameStatus from 'Logic/const/gameStatus';
 import Compass from 'View/HomePage/Compass';
 import faceDirections from 'Logic/const/faceDirections';
+import {tableTopSize} from 'Logic/redux/state/table_top_size';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +48,10 @@ function ControlPanel({
   start,
   tableTopSize,
   move,
+  rotateLeft,
+  rotateRight,
+  resetGame,
+  resetTableTop
 }) {
   const classes = useStyles();
 
@@ -82,6 +87,11 @@ function ControlPanel({
     }
   }
 
+  function handleRestart() {
+    resetGame();
+    resetTableTop();
+  }
+
   return (
     <div className={classes.root}>
       <Typography variant={'h5'} className={classes.title}>Welcome</Typography>
@@ -89,9 +99,10 @@ function ControlPanel({
       <div className={classes.row}>
         <Button label={'Place'} Icon={<PanToolIcon/>} onClick={start} disabled={gameProgress.status !== gameStatus.INIT}/>
         <Button label={'Move'} Icon={<DirectionsWalkIcon/>} onClick={handleMove} disabled={gameProgress.status !== gameStatus.RUNNING}/>
-        <Button label={'Left'} Icon={<RotateLeftIcon/>} disabled={gameProgress.status !== gameStatus.RUNNING}/>
-        <Button label={'Right'} Icon={<RotateRightIcon/>} disabled={gameProgress.status !== gameStatus.RUNNING}/>
+        <Button label={'Left'} Icon={<RotateLeftIcon/>} onClick={rotateLeft} disabled={gameProgress.status !== gameStatus.RUNNING}/>
+        <Button label={'Right'} Icon={<RotateRightIcon/>} onClick={rotateRight} disabled={gameProgress.status !== gameStatus.RUNNING}/>
         <Button label={'Report'} Icon={<EventNoteIcon/>} color={'secondary'} disabled={gameProgress.status !== gameStatus.RUNNING}/>
+        <Button label={'Restart'} Icon={<EventNoteIcon/>} onClick={handleRestart} disabled={gameProgress.status === gameStatus.INIT}/>
       </div>
       <div className={classes.row}>
         {renderHint()}
@@ -115,6 +126,10 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   start: gameProgress.start,
   move: gameProgress.move,
+  rotateLeft: gameProgress.left,
+  rotateRight: gameProgress.right,
+  resetGame: gameProgress.reset,
+  resetTableTop: tableTopSize.reset,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel);
