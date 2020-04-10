@@ -93,18 +93,12 @@ export default createState(
     reduce('GAME_PROGRESS_LEFT_R', function (state, action) {
       let data = Object.assign({}, state);
       data.face = (data.face + 3) % 4;
-      if (data.face === 0) {
-        data.face = 4;
-      }
       return data;
     });
 
     reduce('GAME_PROGRESS_RIGHT_R', function (state, action) {
       let data = Object.assign({}, state);
       data.face = (data.face + 1) % 4;
-      if (data.face === 0) {
-        data.face = 4;
-      }
       return data;
     });
 
